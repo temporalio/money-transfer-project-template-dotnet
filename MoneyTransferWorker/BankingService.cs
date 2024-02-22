@@ -59,16 +59,16 @@ public class BankingService
         if (amount > account.Balance)
             throw new InsufficientFundsError($"The account {accountNumber} has insufficient funds to complete this transaction.");
 
-        account.Balance -= amount; // Deduct the amount from the account balance
-        await Task.Delay(100); // Simulate processing delay
+        account.Balance -= amount; 
+        await Task.Delay(100); 
         return GenerateTransactionId("W");
     }
 
     public async Task<string> Deposit(string accountNumber, int amount, string referenceId)
     {
         var account = _mockBank.FindAccount(accountNumber);
-        account.Balance += amount; // Add the amount to the account balance
-        await Task.Delay(100); // Simulate processing delay
+        account.Balance += amount; 
+        await Task.Delay(100); 
         return GenerateTransactionId("D");
     }
 
