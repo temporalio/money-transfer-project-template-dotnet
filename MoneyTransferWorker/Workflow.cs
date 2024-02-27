@@ -1,7 +1,6 @@
+namespace MoneyTransferProject;
 using Temporalio.Workflows;
 using Temporalio.Common;
-
-namespace MoneyTransferProject;
 
 [Workflow]
 public class MoneyTransferWorkflow 
