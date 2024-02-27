@@ -1,4 +1,5 @@
 namespace MoneyTransferProject;
+
 public record PaymentDetails(
     string SourceAccount,
     string TargetAccount,
