@@ -32,5 +32,4 @@ try
 catch (Exception ex) 
 {
     Console.Error.WriteLine($"Workflow execution failed: {ex.Message}");
-    // Handle the exception, e.g., log it, retry, or exit
 }
