@@ -4,14 +4,7 @@ using Temporalio.Common;
 namespace MoneyTransferProject;
 
 [Workflow]
-public interface IMoneyTransferWorkflow
-{
-    [WorkflowRun]
-    Task<string> RunAsync(PaymentDetails details);
-}
-
-[Workflow]
-public class MoneyTransferWorkflow : IMoneyTransferWorkflow
+public class MoneyTransferWorkflow 
 {
     [WorkflowRun]
     public async Task<string> RunAsync(PaymentDetails details)
