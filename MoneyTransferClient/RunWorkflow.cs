@@ -29,7 +29,7 @@ try
     var result = await handle.GetResultAsync<string>();
     Console.WriteLine($"Workflow result: {result}");
 }
-catch (Exception ex) // Consider catching a more specific exception if available
+catch (Exception ex) 
 {
     Console.Error.WriteLine($"Workflow execution failed: {ex.Message}");
     // Handle the exception, e.g., log it, retry, or exit
