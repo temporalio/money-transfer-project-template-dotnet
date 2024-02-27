@@ -1,15 +1,7 @@
+namespace MoneyTransferProject;
 using Temporalio.Activities;
 
-namespace MoneyTransferProject;
-
-public interface IBankingActivities
-{
-    Task<string> WithdrawAsync(PaymentDetails details);
-    Task<string> DepositAsync(PaymentDetails details);
-    Task<string> RefundAsync(PaymentDetails details);
-}
-
-public class BankingActivities : IBankingActivities
+public class BankingActivities 
 {
     [Activity]
     public async Task<string> WithdrawAsync(PaymentDetails details)
