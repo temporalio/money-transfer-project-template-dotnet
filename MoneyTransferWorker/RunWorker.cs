@@ -1,6 +1,5 @@
 using Temporalio.Client;
 using Temporalio.Worker;
-using MoneyTransferActivity;
 using MoneyTransferProject;
 
 public class Program

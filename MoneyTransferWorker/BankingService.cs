@@ -1,3 +1,5 @@
+namespace MoneyTransferProject;
+
 public class Account
 {
     public string AccountNumber { get; private set; }
@@ -84,4 +86,3 @@ public class BankingService
         return $"{prefix}-{Guid.NewGuid()}";
     }
 }
-

@@ -1,6 +1,5 @@
-using MoneyTransferProject;
-using MoneyTransferShared;
 using Temporalio.Client;
+using MoneyTransferProject;
 
 class Program
 {
