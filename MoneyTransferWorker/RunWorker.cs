@@ -21,9 +21,7 @@ var activities = new BankingActivities();
 using var worker = new TemporalWorker(
     client, // client
     new TemporalWorkerOptions(taskQueue: "MONEY_TRANSFER_TASK_QUEUE")
-        .AddActivity(activities.WithdrawAsync) // Register activities 
-        .AddActivity(activities.DepositAsync)
-        .AddActivity(activities.RefundAsync)
+        .AddAllActivities(activities) // Register activities 
         .AddWorkflow<MoneyTransferWorkflow>() // Register workflow
 );
 

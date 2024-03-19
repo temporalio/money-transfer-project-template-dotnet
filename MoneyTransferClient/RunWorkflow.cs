@@ -9,7 +9,7 @@ var details = new PaymentDetails(
     "85-150", // SourceAccount
     "43-812", // TargetAccount
     400,      // Amount
-    "12345"   // ReferenceID
+    "12345"   // ReferenceId
 );
 
 Console.WriteLine($"Starting transfer from account {details.SourceAccount} to account {details.TargetAccount} for ${details.Amount}");

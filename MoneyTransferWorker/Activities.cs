@@ -4,13 +4,13 @@ using Temporalio.Activities;
 public class BankingActivities 
 {
     [Activity]
-    public async Task<string> WithdrawAsync(PaymentDetails details)
+    public static async Task<string> WithdrawAsync(PaymentDetails details)
     {
         var bankService = new BankingService("bank1.example.com");
         Console.WriteLine($"Withdrawing ${details.Amount} from account {details.SourceAccount}.");
         try
         {
-            return await bankService.Withdraw(details.SourceAccount, details.Amount, details.ReferenceID);
+            return await bankService.Withdraw(details.SourceAccount, details.Amount, details.ReferenceId);
         }
         catch (Exception ex)
         {
@@ -19,13 +19,13 @@ public class BankingActivities
     }
 
     [Activity]
-    public async Task<string> DepositAsync(PaymentDetails details)
+    public static async Task<string> DepositAsync(PaymentDetails details)
     {
         var bankService = new BankingService("bank2.example.com");
         Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
         try
         {
-            return await bankService.Deposit(details.TargetAccount, details.Amount, details.ReferenceID);
+            return await bankService.Deposit(details.TargetAccount, details.Amount, details.ReferenceId);
         }
         catch (Exception ex)
         {
@@ -34,13 +34,13 @@ public class BankingActivities
     }
 
     [Activity]
-    public async Task<string> RefundAsync(PaymentDetails details)
+    public static async Task<string> RefundAsync(PaymentDetails details)
     {
         var bankService = new BankingService("bank1.example.com");
         Console.WriteLine($"Refunding ${details.Amount} to account {details.SourceAccount}.");
         try
         {
-            return await bankService.Refund(details.SourceAccount, details.Amount, details.ReferenceID);
+            return await bankService.Refund(details.SourceAccount, details.Amount, details.ReferenceId);
         }
         catch (Exception ex)
         {
