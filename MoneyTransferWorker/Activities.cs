@@ -1,3 +1,4 @@
+// @@@SNIPSTART money-transfer-project-template-dotnet-withdraw-activity
 namespace MoneyTransferProject;
 using Temporalio.Activities;
 
@@ -17,7 +18,9 @@ public class BankingActivities
             throw new ApplicationException("Withdrawal failed", ex);
         }
     }
+// @@@SNIPEND
 
+// @@@SNIPSTART money-transfer-project-template-dotnet-deposit-activity
     [Activity]
     public static async Task<string> DepositAsync(PaymentDetails details)
     {
@@ -32,7 +35,9 @@ public class BankingActivities
             throw new ApplicationException("Deposit failed", ex);
         }
     }
+// @@@SNIPEND
 
+// @@@SNIPSTART money-transfer-project-template-dotnet-refund-activity
     [Activity]
     public static async Task<string> RefundAsync(PaymentDetails details)
     {
@@ -48,3 +53,4 @@ public class BankingActivities
         }
     }
 }
+// @@@SNIPEND

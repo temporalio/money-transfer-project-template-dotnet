@@ -17,7 +17,7 @@ Run the command:
 Follow these steps to copy to you local machine. 
 
 ```
-git clone https://github.com/jsundai/money-transfer-temporal-template-dotnet.git
+git clone https://github.com/temporalio/money-transfer-project-template-dotnet
 
 cd money-transfer-temporal-template-dotnet
 ```

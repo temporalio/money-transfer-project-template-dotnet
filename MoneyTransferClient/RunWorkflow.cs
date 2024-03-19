@@ -1,3 +1,4 @@
+// @@@SNIPSTART money-transfer-project-template-dotnet-start-workflow
 using MoneyTransferProject;
 using Temporalio.Client;
 
@@ -33,3 +34,4 @@ catch (Exception ex)
 {
     Console.Error.WriteLine($"Workflow execution failed: {ex.Message}");
 }
+// @@@SNIPEND

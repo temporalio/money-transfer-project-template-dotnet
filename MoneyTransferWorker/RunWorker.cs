@@ -1,3 +1,4 @@
+// @@@SNIPSTART money-transfer-project-template-dotnet-worker
 using Temporalio.Client;
 using Temporalio.Worker;
 using MoneyTransferProject;
@@ -35,3 +36,4 @@ catch (OperationCanceledException)
 {
     Console.WriteLine("Worker cancelled");
 }
+// @@@SNIPEND

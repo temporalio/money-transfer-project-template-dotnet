@@ -1,3 +1,4 @@
+// @@@SNIPSTART money-transfer-project-template-dotnet-workflow
 namespace MoneyTransferProject;
 using Temporalio.Workflows;
 using Temporalio.Common;
@@ -56,3 +57,4 @@ public class MoneyTransferWorkflow
         return $"Transaction completed successfully. Withdrawal result: {withdrawResult}, Deposit result: {depositResult}";
     }
 }
+// @@@SNIPEND
