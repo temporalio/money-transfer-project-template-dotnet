@@ -1,8 +1,10 @@
 // @@@SNIPSTART money-transfer-project-template-dotnet-withdraw-activity
-namespace MoneyTransferProject;
+namespace Temporalio.MoneyTransferProject.Activities;
 using Temporalio.Activities;
+using Temporalio.MoneyTransferProject.Worker.BankingService;
+using Temporalio.MoneyTransferProject.Shared;
 
-public class BankingActivities 
+public class BankingActivities
 {
     [Activity]
     public static async Task<string> WithdrawAsync(PaymentDetails details)
@@ -11,7 +13,7 @@ public class BankingActivities
         Console.WriteLine($"Withdrawing ${details.Amount} from account {details.SourceAccount}.");
         try
         {
-            return await bankService.Withdraw(details.SourceAccount, details.Amount, details.ReferenceId);
+            return await bankService.WithdrawAsync(details.SourceAccount, details.Amount, details.ReferenceId).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
@@ -28,7 +30,7 @@ public class BankingActivities
         Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
         try
         {
-            return await bankService.Deposit(details.TargetAccount, details.Amount, details.ReferenceId);
+            return await bankService.DepositAsync(details.TargetAccount, details.Amount, details.ReferenceId);
         }
         catch (Exception ex)
         {
@@ -45,7 +47,7 @@ public class BankingActivities
         Console.WriteLine($"Refunding ${details.Amount} to account {details.SourceAccount}.");
         try
         {
-            return await bankService.Refund(details.SourceAccount, details.Amount, details.ReferenceId);
+            return await bankService.RefundAsync(details.SourceAccount, details.Amount, details.ReferenceId);
         }
         catch (Exception ex)
         {

@@ -1,5 +1,6 @@
 // @@@SNIPSTART money-transfer-project-template-dotnet-start-workflow
-using MoneyTransferProject;
+using Temporalio.MoneyTransferProject.Workflow;
+using Temporalio.MoneyTransferProject.Shared;
 using Temporalio.Client;
 
 // Connect to the Temporal server
@@ -30,7 +31,7 @@ try
     var result = await handle.GetResultAsync<string>();
     Console.WriteLine($"Workflow result: {result}");
 }
-catch (Exception ex) 
+catch (Exception ex)
 {
     Console.Error.WriteLine($"Workflow execution failed: {ex.Message}");
 }

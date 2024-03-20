@@ -1,15 +1,17 @@
 // @@@SNIPSTART money-transfer-project-template-dotnet-workflow
-namespace MoneyTransferProject;
+namespace Temporalio.MoneyTransferProject.Workflow;
 using Temporalio.Workflows;
 using Temporalio.Common;
+using Temporalio.MoneyTransferProject.Worker.BankingServiceExceptions;
+using Temporalio.MoneyTransferProject.Shared;
 
 [Workflow]
-public class MoneyTransferWorkflow 
+public class MoneyTransferWorkflow
 {
     [WorkflowRun]
     public async Task<string> RunAsync(PaymentDetails details)
     {
-        // Retry policy 
+        // Retry policy
         var retryPolicy = new RetryPolicy
         {
             InitialInterval = TimeSpan.FromSeconds(1),

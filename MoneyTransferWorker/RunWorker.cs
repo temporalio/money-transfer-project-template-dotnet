@@ -1,7 +1,8 @@
 // @@@SNIPSTART money-transfer-project-template-dotnet-worker
 using Temporalio.Client;
 using Temporalio.Worker;
-using MoneyTransferProject;
+using Temporalio.MoneyTransferProject.Workflow;
+using Temporalio.MoneyTransferProject.Activities;
 
 // Create a client to connect to localhost on "default" namespace
 var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
@@ -22,7 +23,7 @@ var activities = new BankingActivities();
 using var worker = new TemporalWorker(
     client, // client
     new TemporalWorkerOptions(taskQueue: "MONEY_TRANSFER_TASK_QUEUE")
-        .AddAllActivities(activities) // Register activities 
+        .AddAllActivities(activities) // Register activities
         .AddWorkflow<MoneyTransferWorkflow>() // Register workflow
 );
 

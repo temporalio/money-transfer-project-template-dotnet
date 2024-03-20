@@ -1,5 +1,5 @@
 // @@@SNIPSTART money-transfer-project-template-dotnet-shared
-namespace MoneyTransferProject;
+namespace Temporalio.MoneyTransferProject.Shared;
 public record PaymentDetails(
     string SourceAccount,
     string TargetAccount,
