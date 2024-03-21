@@ -34,7 +34,7 @@ public class BankingService
         }
 
         account.Balance -= amount;
-        await Task.Delay(100);
+        await Task.Delay(100); // Simulate processing delay
         return GenerateTransactionId("W");
     }
 
@@ -45,10 +45,14 @@ public class BankingService
         await Task.Delay(100);
         return GenerateTransactionId("D");
     }
+    public async Task<string> DepositThatFailsAsync(string accountNumber, int amount, string referenceId)
+    {
+        await Task.Delay(100);
+        throw new ApplicationException("This deposit has failed.");
+    }
 
     public async Task<string> RefundAsync(string sourceAccount, int amount, string referenceId)
     {
-        // Simulate processing delay
         await Task.Delay(100);
         return GenerateTransactionId("R");
     }

@@ -28,6 +28,12 @@ public class BankingActivities
     {
         var bankService = new BankingService("bank2.example.com");
         Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
+
+        // Uncomment below and comment out the try-catch block below to simulate unknown failure
+        /*
+        return await bankService.DepositThatFailsAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+        */
+
         try
         {
             return await bankService.DepositAsync(details.TargetAccount, details.Amount, details.ReferenceId);
