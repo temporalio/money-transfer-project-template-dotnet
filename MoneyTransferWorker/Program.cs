@@ -1,8 +1,8 @@
 // @@@SNIPSTART money-transfer-project-template-dotnet-worker
+// This file is designated to run the worker
 using Temporalio.Client;
 using Temporalio.Worker;
-using Temporalio.MoneyTransferProject.Workflow;
-using Temporalio.MoneyTransferProject.Activities;
+using Temporalio.MoneyTransferProject.MoneyTransferWorker;
 
 // Create a client to connect to localhost on "default" namespace
 var client = await TemporalClient.ConnectAsync(new("localhost:7233"));

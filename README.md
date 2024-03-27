@@ -19,7 +19,7 @@ Follow these steps to copy to you local machine.
 ```
 git clone https://github.com/temporalio/money-transfer-project-template-dotnet
 
-cd money-transfer-temporal-template-dotnet
+cd money-transfer-project-template-dotnet
 ```
 
 ## Run The Workflow

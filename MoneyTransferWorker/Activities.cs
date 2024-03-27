@@ -1,8 +1,7 @@
 // @@@SNIPSTART money-transfer-project-template-dotnet-withdraw-activity
-namespace Temporalio.MoneyTransferProject.Activities;
+namespace Temporalio.MoneyTransferProject.MoneyTransferWorker;
 using Temporalio.Activities;
-using Temporalio.MoneyTransferProject.Worker.BankingService;
-using Temporalio.MoneyTransferProject.Shared;
+using Temporalio.Exceptions;
 
 public class BankingActivities
 {
@@ -17,7 +16,7 @@ public class BankingActivities
         }
         catch (Exception ex)
         {
-            throw new ApplicationException("Withdrawal failed", ex);
+            throw new ApplicationFailureException("Withdrawal failed", ex);
         }
     }
 // @@@SNIPEND
@@ -40,7 +39,7 @@ public class BankingActivities
         }
         catch (Exception ex)
         {
-            throw new ApplicationException("Deposit failed", ex);
+            throw new ApplicationFailureException("Deposit failed", ex);
         }
     }
 // @@@SNIPEND
@@ -57,7 +56,7 @@ public class BankingActivities
         }
         catch (Exception ex)
         {
-            throw new ApplicationException("Refund failed", ex);
+            throw new ApplicationFailureException("Refund failed", ex);
         }
     }
 }

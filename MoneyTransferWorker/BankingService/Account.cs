@@ -1,4 +1,4 @@
-namespace Temporalio.MoneyTransferProject.Worker.BankingServiceAccount;
+namespace Temporalio.MoneyTransferProject.MoneyTransferWorker;
 public class Account
 {
     public string AccountNumber { get; private set; }
