@@ -10,7 +10,7 @@ var client = await TemporalClient.ConnectAsync(new("localhost:7233") { Namespace
 // Define payment details
 var details = new PaymentDetails(
     SourceAccount: "85-150",
-    TargetAccount: "43-813",
+    TargetAccount: "43-812",
     Amount: 400,
     ReferenceId: "12345");
 
