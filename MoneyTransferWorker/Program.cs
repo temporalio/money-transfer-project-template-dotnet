@@ -4,8 +4,11 @@ using Temporalio.Client;
 using Temporalio.Worker;
 using Temporalio.MoneyTransferProject.MoneyTransferWorker;
 
-// Create a client to connect to localhost on "default" namespace
-var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
+// Use a helper method to create a Temporal Client configured to use a 
+// specific endpoint address, Namespace, and authentication options for 
+// the Temporal Service based on the presence of some environment variables
+var client = await TemporalClientHelper.CreateClientAsync();
+
 
 // Cancellation token to shutdown worker on ctrl+c
 using var tokenSource = new CancellationTokenSource();
