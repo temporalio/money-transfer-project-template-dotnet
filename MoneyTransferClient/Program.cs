@@ -1,17 +1,19 @@
 // @@@SNIPSTART money-transfer-project-template-dotnet-start-workflow
-using Temporalio.MoneyTransferProject.Workflow;
-using Temporalio.MoneyTransferProject.Shared;
+// This file is designated to run the workflow
+using Temporalio.MoneyTransferProject.MoneyTransferWorker;
 using Temporalio.Client;
 
-// Connect to the Temporal server
-var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
+// Use a helper method to create a Temporal Client configured to use a 
+// specific endpoint address, Namespace, and authentication options for 
+// the Temporal Service based on the presence of some environment variables
+var client = await TemporalClientHelper.CreateClientAsync();
 
 // Define payment details
 var details = new PaymentDetails(
-    "85-150", // SourceAccount
-    "43-812", // TargetAccount
-    400,      // Amount
-    "12345"   // ReferenceId
+    SourceAccount: "85-150",
+    TargetAccount: "43-812",
+    Amount: 400,
+    ReferenceId: "12345"
 );
 
 Console.WriteLine($"Starting transfer from account {details.SourceAccount} to account {details.TargetAccount} for ${details.Amount}");
@@ -20,6 +22,7 @@ var workflowId = $"pay-invoice-{Guid.NewGuid()}";
 
 try
 {
+
     // Start the workflow
     var handle = await client.StartWorkflowAsync(
         (MoneyTransferWorkflow wf) => wf.RunAsync(details),
@@ -28,7 +31,7 @@ try
     Console.WriteLine($"Started Workflow {workflowId}");
 
     // Await the result of the workflow
-    var result = await handle.GetResultAsync<string>();
+    var result = await handle.GetResultAsync();
     Console.WriteLine($"Workflow result: {result}");
 }
 catch (Exception ex)

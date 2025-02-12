@@ -1,8 +1,7 @@
 // @@@SNIPSTART money-transfer-project-template-dotnet-withdraw-activity
-namespace Temporalio.MoneyTransferProject.Activities;
+namespace Temporalio.MoneyTransferProject.MoneyTransferWorker;
 using Temporalio.Activities;
-using Temporalio.MoneyTransferProject.Worker.BankingService;
-using Temporalio.MoneyTransferProject.Shared;
+using Temporalio.Exceptions;
 
 public class BankingActivities
 {
@@ -17,7 +16,7 @@ public class BankingActivities
         }
         catch (Exception ex)
         {
-            throw new ApplicationException("Withdrawal failed", ex);
+            throw new ApplicationFailureException("Withdrawal failed", ex);
         }
     }
 // @@@SNIPEND
@@ -28,13 +27,19 @@ public class BankingActivities
     {
         var bankService = new BankingService("bank2.example.com");
         Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
+
+        // Uncomment below and comment out the try-catch block below to simulate unknown failure
+        /*
+        return await bankService.DepositThatFailsAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+        */
+
         try
         {
             return await bankService.DepositAsync(details.TargetAccount, details.Amount, details.ReferenceId);
         }
         catch (Exception ex)
         {
-            throw new ApplicationException("Deposit failed", ex);
+            throw new ApplicationFailureException("Deposit failed", ex);
         }
     }
 // @@@SNIPEND
@@ -51,7 +56,7 @@ public class BankingActivities
         }
         catch (Exception ex)
         {
-            throw new ApplicationException("Refund failed", ex);
+            throw new ApplicationFailureException("Refund failed", ex);
         }
     }
 }

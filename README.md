@@ -10,21 +10,21 @@ Before running this application, ensure you have the following installed:
 ## Steps to get started
 
 ## Start the Temporal Server
-Run the command: 
+Run the command:
 `temporal server start-dev`
 
 ## Clone the Repo
-Follow these steps to copy to you local machine. 
+Follow these steps to copy to you local machine.
 
 ```
 git clone https://github.com/temporalio/money-transfer-project-template-dotnet
 
-cd money-transfer-temporal-template-dotnet
+cd money-transfer-project-template-dotnet
 ```
 
-## Run The Workflow 
+## Run The Workflow
 Run the following commands to initiate the Workflow that starts the money transfer process.
-   
+
 1. **Run the following command to begin the client**
 
    ```
@@ -32,14 +32,15 @@ Run the following commands to initiate the Workflow that starts the money transf
    ```
 
 ## Run the Worker
-In a separate terminal, run the following commands: 
+In a separate terminal, run the following commands:
 
-1. **Run the following command to begin the worker**
-   
+2. **Run the following command to begin the worker**
+
    ```
    dotnet run --project MoneyTransferWorker
+   ```
 
-## Open the Web UI 
+## Open the Web UI
 To monitor and inspect the progress and status of your money transfer workflows, open the Temporal UI in your browser. This allows you to view running workflows, completed workflows, and detailed execution histories.
 
-Go to [localhost:8233](http://localhost:8233/). 
+Go to [localhost:8233](http://localhost:8233/).

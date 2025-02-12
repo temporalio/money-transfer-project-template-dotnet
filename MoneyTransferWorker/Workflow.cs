@@ -1,9 +1,9 @@
 // @@@SNIPSTART money-transfer-project-template-dotnet-workflow
-namespace Temporalio.MoneyTransferProject.Workflow;
+namespace Temporalio.MoneyTransferProject.MoneyTransferWorker;
+using Temporalio.MoneyTransferProject.BankingService.Exceptions;
 using Temporalio.Workflows;
 using Temporalio.Common;
-using Temporalio.MoneyTransferProject.Worker.BankingServiceExceptions;
-using Temporalio.MoneyTransferProject.Shared;
+using Temporalio.Exceptions;
 
 [Workflow]
 public class MoneyTransferWorkflow
@@ -17,46 +17,51 @@ public class MoneyTransferWorkflow
             InitialInterval = TimeSpan.FromSeconds(1),
             MaximumInterval = TimeSpan.FromSeconds(100),
             BackoffCoefficient = 2,
-            MaximumAttempts = 5,
-            NonRetryableErrorTypes = new[] { "InvalidAccountError", "InsufficientFundsError" }
+            MaximumAttempts = 3,
+            NonRetryableErrorTypes = new[] { "InvalidAccountException", "InsufficientFundsException" }
         };
 
         string withdrawResult;
         try
         {
-            withdrawResult = await Workflow.ExecuteActivityAsync<string>(
-                "Withdraw", // registered activity name
-                new object[] { details },
-                new ActivityOptions { ScheduleToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
+            withdrawResult = await Workflow.ExecuteActivityAsync(
+                () => BankingActivities.WithdrawAsync(details),
+                new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
             );
         }
-        catch (ApplicationException ex) when (ex.InnerException is InsufficientFundsError)
+        catch (ApplicationFailureException ex) when (ex.ErrorType == "InsufficientFundsException")
         {
-            throw new ApplicationException("Withdrawal failed due to insufficient funds.", ex);
+            throw new ApplicationFailureException("Withdrawal failed due to insufficient funds.", ex);
         }
 
         string depositResult;
         try
         {
-            depositResult = await Workflow.ExecuteActivityAsync<string>(
-                "Deposit",
-                new object[] { details },
-                new ActivityOptions { ScheduleToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
+            depositResult = await Workflow.ExecuteActivityAsync(
+                () => BankingActivities.DepositAsync(details),
+                new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
             );
+            // If everything succeeds, return transfer complete
+            return $"Transfer complete (transaction IDs: {withdrawResult}, {depositResult})";
         }
-        catch (ApplicationException ex)
+        catch (Exception depositEx)
         {
-            // Attempt to refund the withdrawal if the deposit fails
-            string refundResult = await Workflow.ExecuteActivityAsync<string>(
-                "Refund",
-                new object[] { details },
-                new ActivityOptions { ScheduleToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
-            );
-            // Rethrow the original deposit failure exception
-            throw new ApplicationException($"Deposit failed, refund attempted with result: {refundResult}", ex);
+            try
+            {
+                // if the deposit fails, attempt to refund the withdrawal
+                string refundResult = await Workflow.ExecuteActivityAsync(
+                    () => BankingActivities.RefundAsync(details),
+                    new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
+                );
+                // If refund is successful, but deposit failed
+                throw new ApplicationFailureException($"Failed to deposit money into account {details.TargetAccount}. Money returned to {details.SourceAccount}.", depositEx);
+            }
+            catch (Exception refundEx)
+            {
+                // If both deposit and refund fail
+                throw new ApplicationFailureException($"Failed to deposit money into account {details.TargetAccount}. Money could not be returned to {details.SourceAccount}. Cause: {refundEx.Message}", refundEx);
+            }
         }
-        // If everything succeeds, success message
-        return $"Transaction completed successfully. Withdrawal result: {withdrawResult}, Deposit result: {depositResult}";
     }
 }
 // @@@SNIPEND
