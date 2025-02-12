@@ -3,10 +3,8 @@
 using Temporalio.MoneyTransferProject.MoneyTransferWorker;
 using Temporalio.Client;
 
-// Use a helper method to create a Temporal Client configured to use a 
-// specific endpoint address, Namespace, and authentication options for 
-// the Temporal Service based on the presence of some environment variables
-var client = await TemporalClientHelper.CreateClientAsync();
+// Connect to the Temporal server
+var client = await TemporalClient.ConnectAsync(new("localhost:7233") { Namespace = "default" });
 
 // Define payment details
 var details = new PaymentDetails(
@@ -22,7 +20,6 @@ var workflowId = $"pay-invoice-{Guid.NewGuid()}";
 
 try
 {
-
     // Start the workflow
     var handle = await client.StartWorkflowAsync(
         (MoneyTransferWorkflow wf) => wf.RunAsync(details),
