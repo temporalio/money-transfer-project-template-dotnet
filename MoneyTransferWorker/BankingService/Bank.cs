@@ -1,9 +1,18 @@
 namespace Temporalio.MoneyTransferProject.MoneyTransferWorker;
+
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Temporalio.MoneyTransferProject.BankingService.Exceptions;
 
-public class Bank(List<Account> accounts)
+public class Bank
 {
-    private readonly List<Account> accounts = accounts ?? [];
+    private readonly Collection<Account> accounts;
+
+    public Bank(Collection<Account> accounts)
+    {
+        this.accounts = accounts ?? new Collection<Account>(new List<Account>());
+    }
 
     public Account FindAccount(string accountNumber)
     {

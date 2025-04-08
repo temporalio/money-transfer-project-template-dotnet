@@ -32,7 +32,7 @@ Run the following commands to initiate the Workflow that starts the money transf
    ```
 
 ## Run the Worker
-In a separate terminal, run the following commands:
+In a separate or split terminal, run the following commands:
 
 2. **Run the following command to begin the worker**
 
