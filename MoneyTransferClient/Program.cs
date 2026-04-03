@@ -2,9 +2,28 @@
 // This file is designated to run the workflow
 using Temporalio.MoneyTransferProject.MoneyTransferWorker;
 using Temporalio.Client;
+using Temporalio.Common.EnvConfig;
 
-// Connect to the Temporal server
-var client = await TemporalClient.ConnectAsync(new("localhost:7233") { Namespace = "default" });
+// Create the Temporal Client that connects to the Temporal Service.
+// By default, it will connect to one running locally, on the standard
+// port, and use the default Namespace. You can override this by setting
+// the TEMPORAL_PROFILE environment variable to the name of a specific
+// profile that you've set up using the Temporal CLI.
+var profile = Environment.GetEnvironmentVariable("TEMPORAL_PROFILE");
+
+TemporalClientConnectOptions connectOptions;
+if (profile is not null)
+{
+    connectOptions = ClientEnvConfig.LoadClientConnectOptions(
+        new ClientEnvConfig.ProfileLoadOptions { Profile = profile });
+}
+else
+{
+    connectOptions = new("localhost:7233") { Namespace = "default" };
+}
+
+var client = await TemporalClient.ConnectAsync(connectOptions);
+
 
 // Define payment details
 var details = new PaymentDetails(
