@@ -4,8 +4,14 @@ using Temporalio.Client;
 using Temporalio.Worker;
 using Temporalio.MoneyTransferProject.MoneyTransferWorker;
 
-// Create a client to connect to localhost on "default" namespace
-var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
+// Connect to Temporal Cloud using the gRPC endpoint, namespace, and API key
+// supplied via environment variables, with TLS enabled.
+var client = await TemporalClient.ConnectAsync(new(Environment.GetEnvironmentVariable("TEMPORAL_ADDRESS")!)
+{
+    Namespace = Environment.GetEnvironmentVariable("TEMPORAL_NAMESPACE")!,
+    ApiKey = Environment.GetEnvironmentVariable("TEMPORAL_API_KEY"),
+    Tls = new(),
+});
 
 // Cancellation token to shutdown worker on ctrl+c
 using var tokenSource = new CancellationTokenSource();
