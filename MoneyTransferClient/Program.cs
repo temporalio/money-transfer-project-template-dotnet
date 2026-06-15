@@ -2,15 +2,16 @@
 // This file is designated to run the workflow
 using Temporalio.MoneyTransferProject.MoneyTransferWorker;
 using Temporalio.Client;
+using Temporalio.Common.EnvConfig;
 
-// Connect to Temporal Cloud using the gRPC endpoint, namespace, and API key
-// supplied via environment variables, with TLS enabled.
-var client = await TemporalClient.ConnectAsync(new(Environment.GetEnvironmentVariable("TEMPORAL_ADDRESS")!)
-{
-    Namespace = Environment.GetEnvironmentVariable("TEMPORAL_NAMESPACE")!,
-    ApiKey = Environment.GetEnvironmentVariable("TEMPORAL_API_KEY"),
-    Tls = new(),
-});
+// Connect to Temporal Cloud by loading the "cloud-setup" profile from the shared
+// Temporal client config (temporal.toml), which supplies the Cloud address,
+// namespace, TLS settings, and API key.
+var client = await TemporalClient.ConnectAsync(
+    ClientEnvConfig.LoadClientConnectOptions(new ClientEnvConfig.ProfileLoadOptions
+    {
+        Profile = "cloud-setup",
+    }));
 
 // Define payment details
 var details = new PaymentDetails(

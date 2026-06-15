@@ -1,17 +1,18 @@
 // @@@SNIPSTART money-transfer-project-template-dotnet-worker
 // This file is designated to run the worker
 using Temporalio.Client;
+using Temporalio.Common.EnvConfig;
 using Temporalio.Worker;
 using Temporalio.MoneyTransferProject.MoneyTransferWorker;
 
-// Connect to Temporal Cloud using the gRPC endpoint, namespace, and API key
-// supplied via environment variables, with TLS enabled.
-var client = await TemporalClient.ConnectAsync(new(Environment.GetEnvironmentVariable("TEMPORAL_ADDRESS")!)
-{
-    Namespace = Environment.GetEnvironmentVariable("TEMPORAL_NAMESPACE")!,
-    ApiKey = Environment.GetEnvironmentVariable("TEMPORAL_API_KEY"),
-    Tls = new(),
-});
+// Connect to Temporal Cloud by loading the "cloud-setup" profile from the shared
+// Temporal client config (temporal.toml), which supplies the Cloud address,
+// namespace, TLS settings, and API key.
+var client = await TemporalClient.ConnectAsync(
+    ClientEnvConfig.LoadClientConnectOptions(new ClientEnvConfig.ProfileLoadOptions
+    {
+        Profile = "cloud-setup",
+    }));
 
 // Cancellation token to shutdown worker on ctrl+c
 using var tokenSource = new CancellationTokenSource();
