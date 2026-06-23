@@ -23,7 +23,7 @@ var details = new PaymentDetails(
 
 Console.WriteLine($"Starting transfer from account {details.SourceAccount} to account {details.TargetAccount} for ${details.Amount}");
 
-var workflowId = $"pay-invoice-{Guid.NewGuid()}";
+var workflowId = Environment.GetEnvironmentVariable("WORKFLOW_ID") ?? "money-transfer-demo";
 
 try
 {
