@@ -2,9 +2,16 @@
 // This file is designated to run the workflow
 using Temporalio.MoneyTransferProject.MoneyTransferWorker;
 using Temporalio.Client;
+using Temporalio.Common.EnvConfig;
 
-// Connect to the Temporal server
-var client = await TemporalClient.ConnectAsync(new("localhost:7233") { Namespace = "default" });
+var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+connectOptions.TargetHost = string.IsNullOrWhiteSpace(connectOptions.TargetHost)
+    ? "localhost:7233"
+    : connectOptions.TargetHost;
+connectOptions.Namespace = string.IsNullOrWhiteSpace(connectOptions.Namespace)
+    ? "default"
+    : connectOptions.Namespace;
+var client = await TemporalClient.ConnectAsync(connectOptions);
 
 // Define payment details
 var details = new PaymentDetails(

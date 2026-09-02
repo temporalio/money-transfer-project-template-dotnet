@@ -1,11 +1,18 @@
 // @@@SNIPSTART money-transfer-project-template-dotnet-worker
 // This file is designated to run the worker
 using Temporalio.Client;
+using Temporalio.Common.EnvConfig;
 using Temporalio.Worker;
 using Temporalio.MoneyTransferProject.MoneyTransferWorker;
 
-// Create a client to connect to localhost on "default" namespace
-var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
+var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+connectOptions.TargetHost = string.IsNullOrWhiteSpace(connectOptions.TargetHost)
+    ? "localhost:7233"
+    : connectOptions.TargetHost;
+connectOptions.Namespace = string.IsNullOrWhiteSpace(connectOptions.Namespace)
+    ? "default"
+    : connectOptions.Namespace;
+var client = await TemporalClient.ConnectAsync(connectOptions);
 
 // Cancellation token to shutdown worker on ctrl+c
 using var tokenSource = new CancellationTokenSource();

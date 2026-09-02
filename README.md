@@ -25,6 +25,11 @@ cd money-transfer-project-template-dotnet
 ## Run The Workflow
 Run the following commands to initiate the Workflow that starts the money transfer process.
 
+The client and worker load Temporal connection settings from the SDK environment
+configuration. Without configuration, they connect to `localhost:7233` in the
+`default` namespace. Set your Temporal environment configuration before running
+either command to connect elsewhere.
+
 1. **Run the following command to begin the client**
 
    ```
