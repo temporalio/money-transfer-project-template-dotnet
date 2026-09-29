@@ -26,10 +26,14 @@ Console.CancelKeyPress += (_, eventArgs) =>
 // If we had all static activities, we could just reference those directly.
 var activities = new BankingActivities();
 
+// Reads TEMPORAL_TASK_QUEUE when set — e.g. a test harness isolating each run on its
+// own queue — otherwise the shared default, so a copy-paste user is unaffected.
+var taskQueue = Environment.GetEnvironmentVariable("TEMPORAL_TASK_QUEUE") ?? "MONEY_TRANSFER_TASK_QUEUE";
+
 // Create a worker with the activity and workflow registered
 using var worker = new TemporalWorker(
     client, // client
-    new TemporalWorkerOptions(taskQueue: "MONEY_TRANSFER_TASK_QUEUE")
+    new TemporalWorkerOptions(taskQueue: taskQueue)
         .AddAllActivities(activities) // Register activities
         .AddWorkflow<MoneyTransferWorkflow>() // Register workflow
 );
