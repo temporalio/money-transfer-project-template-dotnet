@@ -23,7 +23,7 @@ var details = new PaymentDetails(
 
 Console.WriteLine($"Starting transfer from account {details.SourceAccount} to account {details.TargetAccount} for ${details.Amount}");
 
-var workflowId = $"pay-invoice-{Guid.NewGuid()}";
+var workflowId = Environment.GetEnvironmentVariable("TEMPORAL_WORKFLOW_ID") ?? $"pay-invoice-{Guid.NewGuid()}";
 
 // Reads TEMPORAL_TASK_QUEUE when set — e.g. a test harness isolating each run on its
 // own queue — otherwise the shared default, so a copy-paste user is unaffected.
