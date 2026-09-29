@@ -25,12 +25,16 @@ Console.WriteLine($"Starting transfer from account {details.SourceAccount} to ac
 
 var workflowId = $"pay-invoice-{Guid.NewGuid()}";
 
+// Reads TEMPORAL_TASK_QUEUE when set — e.g. a test harness isolating each run on its
+// own queue — otherwise the shared default, so a copy-paste user is unaffected.
+var taskQueue = Environment.GetEnvironmentVariable("TEMPORAL_TASK_QUEUE") ?? "MONEY_TRANSFER_TASK_QUEUE";
+
 try
 {
     // Start the workflow
     var handle = await client.StartWorkflowAsync(
         (MoneyTransferWorkflow wf) => wf.RunAsync(details),
-        new(id: workflowId, taskQueue: "MONEY_TRANSFER_TASK_QUEUE"));
+        new(id: workflowId, taskQueue: taskQueue));
 
     Console.WriteLine($"Started Workflow {workflowId}");
 
